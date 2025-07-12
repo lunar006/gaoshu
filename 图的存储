@@ -1,0 +1,35 @@
+#include <bits/stdc++.h>
+using namespace std;
+int n,m;
+bool f[1010][1010];
+vector<int> edge[100010];
+
+void add(int u, int v){
+	f[u][v]=1;
+	edge[u].push_back({v});
+}
+
+signed main(){
+	cin>>n>>m; //n个顶点，m条边
+	for (int i=1;i<=m;i++){
+		int x,y;
+		cin>>x>>y;
+		add(x,y);
+		add(y,x);
+	}
+	
+	for (int i=1;i<=n;i++){ //输出矩阵
+		for(int j=1;j<=n;j++)
+			cout<<f[i][j]<<" ";
+		cout<<endl;
+	}
+	
+	for(int i=1;i<=n;i++){
+		cout<<edge[i].size()<<" "; //输出顶点i的度数
+		sort(edge[i].begin(), edge[i].end()); //再按照从小到大的顺序
+		for (auto j: edge[i]) //将edge[i]拆分为一个一个的数字j，依次输出，直到全部输出为止
+			cout<<j<<" "; //依次输出与顶点i直接相连的所有顶点。
+		cout<<endl;
+	}
+	return 0;	
+}
