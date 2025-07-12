@@ -1,0 +1,23 @@
+#include <bits/stdc++.h>
+using namespace std;
+constexpr int M0D = 1e9+7;
+long long a,b,p;
+int ksm(long long x,long long ci)
+{
+	long long ans=1;
+	while(ci){
+		if(ci%2) ans=ans*x%p;
+		x=x*x%p;
+		ci=ci/2;
+	}
+	return ans;
+}
+
+int main()
+{
+	cin>>a>>b>>p;
+	long long ans=ksm(a,b);
+	ans=ans%p;
+	cout<<a<<"^"<<b<<" mod "<<p<<"="<<ans;
+	return 0;
+}
