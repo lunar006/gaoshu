@@ -1,0 +1,38 @@
+#include <bits/stdc++.h>
+#define int long long 
+using namespace std;
+
+signed main(){
+	//优化C++程序的输入输出性能
+	ios::sync_with_stdio(false); //关闭C++输入输出流与C语言输入输出函数之间的同步
+	cin.tie(nullptr); //解除cin与cout之间的绑定
+	cout.tie(nullptr); //解除cout与cerr之间的绑定
+	
+	int n,m; //n个点，m条边
+	int f[105][105];
+	cin>>n>>m;
+	for (int i=1;i<=n;i++){
+		for (int j=1;j<=n;j++)
+			f[i][j] = 1e18+10;
+		f[i][i] = 0;
+	}
+	
+	for (int i=1;i<=m;i++){
+		int u,v,w;
+		cin>>u>>v>>w;
+		f[u][v] = min(f[u][v],w);
+		f[v][u] = min(f[v][u],w);
+    }
+	
+    for (int k=1;k<=n;k++)
+		for (int i=1;i<=n;i++)
+			for (int j=1;j<=n;j++)
+				f[i][j] = min(f[i][k]+f[k][j],f[i][j]);
+	
+	for (int i=1;i<=n;i++){
+		for (int j=1;j<=n;j++)
+			cout<<f[i][j]<<" ";
+		cout<<endl;
+	}
+	return 0;
+}
