@@ -1,0 +1,66 @@
+#include <bits/stdc++.h>
+using namespace std;
+int n,m; //n个点，m条边的信息
+vector<pair<int, int>> edge[3005];
+long long dis[2005],len[2005];
+bool vis[2005];
+bool flag;
+
+void add(int u,int v,int w){
+	edge[u].push_back({v,w});
+}
+
+void spfa(){ //本质是bfs
+	queue<int> q;
+	q.push(1);
+	dis[1]=0;
+	vis[1]=1;
+	while(!q.empty()){
+		if(flag) break;
+		int u= q.front();
+		q.pop();
+		vis[u]=0;
+		for(auto i:edge[u]){
+			int v=i.first;
+			int w=i.second;
+			if (dis[v]>dis[u]+w){
+				dis[v]=dis[u]+w;
+				if(!vis[v]){
+					vis[v]=1;
+					q.push(v);
+					len[v]++;
+					if(len[v]==n){ //松弛n次，即有负环
+						flag=true; break;
+					}
+				}
+			}
+		}
+	}
+}
+
+signed main(){
+	ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
+	int T;
+	cin>>T;
+	while(T--){ //多测要清空
+		flag=false;
+		cin>>n>>m;
+		for (int i=1;i<=n;i++)
+			edge[i].clear(); //清除上一次的数据
+		
+		for (int i=1;i<=m;i++){
+			int u,v,w;
+			cin>>u>>v>>w;
+			if(w>=0) add(u,v,w),add(v,u,w);
+			else add(u,v,w);
+		}
+		
+		for (int i=1;i<=n;i++) dis[i]=1e18+10, vis[i]=0 , len[i]=0;
+		
+		spfa();
+		
+		if(flag==true) cout<<"YES"<<endl;
+		else cout<<"NO"<<endl;
+	}
+	return 0;
+}
